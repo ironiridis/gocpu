@@ -9,6 +9,8 @@ func main() {
 	c := gocpu.NewCore(gocpu.NewBusUInt8(time.Second * 1))
 	per_io := gocpu_io.Make(nil, os.Stdout)
 	err := c.RegisterPeripheral(&per_io)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 	panic("eof")
 }

@@ -1,1 +1,1 @@
-package "gocpu_tests"
+package gocpu_tests

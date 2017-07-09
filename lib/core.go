@@ -13,11 +13,11 @@ var ErrorPeripheralTooMany = errors.New("Not enough available control bits")
 
 // Core represents the execution environment for a CPU including Peripherals, symbols, and state
 type Core struct {
-	p []*Peripheral
-	cb [32]PeripheralCall
+	p       []*Peripheral
+	cb      [32]PeripheralCall
 	cbCount int
-	cbMap map[string]uint
-	b Bus
+	cbMap   map[string]uint
+	b       Bus
 }
 
 // NewCore returns an instance of Core.
@@ -30,18 +30,20 @@ func NewCore(b Bus) (c Core) {
 
 // RegisterPeripheral adds a Peripheral to Core, reads its symbols and turns them into control
 // bits, runs the Init routine (if any)
-func (c *Core) RegisterPeripheral(p *Peripheral) (error) {
+func (c *Core) RegisterPeripheral(p *Peripheral) error {
 	if len(p.Calls) == 0 {
 		return ErrorPeripheralNoCalls
 	}
 
-	if c.cbCount + len(p.Calls) > cap(c.cb) {
+	if c.cbCount+len(p.Calls) > cap(c.cb) {
 		return ErrorPeripheralTooMany
 	}
 
 	if p.Init != nil {
 		err := p.Init(p)
-		if err != nil { return err }
+		if err != nil {
+			return err
+		}
 		p.Init = nil // don't run again later
 	}
 

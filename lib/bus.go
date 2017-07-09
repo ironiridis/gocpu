@@ -5,21 +5,21 @@ import "errors"
 
 // Bus represents a channel (with a particular width) for data to flow between Peripherals
 type Bus interface {
-	Read() (uint)
+	Read() uint
 	Write(uint)
 }
 
 // BusUInt32 is a 32-bit Bus
 type BusUInt32 struct {
-	v chan uint32
-	expire *time.Timer
+	v          chan uint32
+	expire     *time.Timer
 	expireTime time.Duration
 }
 
 // BusUInt8 is an 8-bit Bus
 type BusUInt8 struct {
-	v chan uint8
-	expire *time.Timer
+	v          chan uint8
+	expire     *time.Timer
 	expireTime time.Duration
 }
 
@@ -84,4 +84,3 @@ func (b BusUInt8) Write(v uint) {
 		panic(errors.New("Bus write timeout"))
 	}
 }
-
